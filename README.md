@@ -52,7 +52,7 @@ Precisa-se:
 
 Tecnologias adotadas neste protótipo:
 - [x] Back-end: Firebase/firestore
-- [x] Frontend WEB: ReactJS/Typescript
+- [x] Frontend WEB/PWA: ReactJS/Typescript
 - [ ] Android: A ser definido (preferencialmente nativo para diminuir tamanho e exigências do app)
 - [ ] iPhone: A ser definido (preferencialmente nativo para diminuir tamanho e exigências do app)
 
