@@ -26,6 +26,7 @@ Requisitos funcionais:
 - [ ] Acompanhamento das propostas
 - [ ] Acompanhamento do processo
 - [ ] Anexar documentos ao processo
+- [ ] PWA
 
 Idéias:
 - [ ] Validação manual dos cadastros para evitar lixo e sobrecarga do sistema?
