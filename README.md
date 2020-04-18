@@ -52,3 +52,5 @@ Tecnologias adotadas neste protótipo:
 - [x] Frontend WEB: ReactJS/Typescript
 - [ ] Android: A ser definido (preferencialmente nativo para diminuir tamanho e exigências do app)
 - [ ] iPhone: A ser definido (preferencialmente nativo para diminuir tamanho e exigências do app)
+
+> Aplicativo para entregas: A proposta desse app é apenas de facilitadr o contato entre o(a) advogado e a(a) trabalhador(a). Um projeto para que os entregadores tenham um aplicativo próprio de entregas deve ser feito em paralelo e organizado por um consorcio de associação de trabalhadores.
