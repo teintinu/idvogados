@@ -1,7 +1,9 @@
-# idvogados
-Conexão entre trabalhadores e advogados trabalhistas
+![idvogados](https://idvogados.firebaseapp.com/logo.2144737e.png)
+###### Conexão entre trabalhadores e advogados trabalhistas
 
 Este é um projeto Open Source, sob a licença GPL3, inspirado na proposta do Greg News https://www.youtube.com/watch?v=v3B9w6wWNQA
+
+Para participar desse projeto você pode acessar a área [Issues](https://github.com/thr0w/idvogados/issues), você pode abrir questões em "New Issue" ou opinar sobre questões existentes entrando nelas.
 
 ### O App permitirá que advogados encontrem casos facilmente e façam proposta aos trabalhadores.
 ### Dúvida: O app deve listar advogados(as) para que o trabalhador possa procurá-lo(a)?
