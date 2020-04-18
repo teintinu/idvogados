@@ -1,12 +1,13 @@
 import * as React from 'react'
 import { Passos } from './passos'
 import { fbauth } from '../firebase'
-import * as firebase from 'firebase/app'
+import { auth } from 'firebase/app'
 
 export function Login() {
   return <Passos atual={0}>
     <>
       <div className="buttons">
+
         <button className="button is-danger" onClick={logarGmail}>Logar usado conta do Google/GMAIL</button>
         <button className="button is-info" disabled>Logar usando conta do Facebok</button>
       </div>
@@ -49,7 +50,7 @@ export function Login() {
     </>
   </Passos>
   function logarGmail() {
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new auth.GoogleAuthProvider();
     return fbauth.signInWithPopup(provider)
   }
 }

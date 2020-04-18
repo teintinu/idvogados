@@ -1,8 +1,31 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+  
+    function isUser(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
     match /{document=**} {
       allow read, write: if false;
+    }
+    
+    match /perfil/{uid} {
+      allow read: if isSignedIn();
+      allow create, delete, update: if isUser(uid);
+    }
+    
+    match /caso/{cid} {
+      allow read, list: if isSignedIn();
+      allow create: if isUser(request.resource.data.trabalhador);
+      allow delete: if isUser(resource.data.trabalhador);
+      allow update: if isUser(resource.data.trabalhador)||(
+        (!!resource.data.advogado) && isUser(request.resource.data.advogado)
+      )
     }
   }
 }

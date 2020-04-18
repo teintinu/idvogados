@@ -13,26 +13,23 @@ const passos = [
 ]
 
 export function Passos({ atual, children }: React.PropsWithChildren<PassosProp>) {
-  return <div className="steps">
+  return <ul className="steps is-vertical is-balanced">
     {passos.map((p, idx) => {
-      const cls = idx < atual ? "step-item is-completed is-success" :
-        idx === atual ? "step-item is-active" : "step-item"
-      return <div className={cls}>
-        <div className="step-marker">
+      const cls = idx < atual ? "steps-segment is-completed is-success" :
+        idx === atual ? "steps-segment is-active" : "steps-segment"
+      return <li key={idx} className={cls}>
+        <span className="steps-marker">
           <span className="icon">
-            <i className="fa fa-check"></i>
+            <i className={idx < atual ? "fa fa-check" :
+              idx === atual ? "fa fa-circle" : "fa fa-circle"}
+            ></i>
           </span>
+        </span>
+        <div className="steps-content">
+          <p className="is-size-4">{p.titulo}</p>
+          {atual === idx ? <><p>{p.descricao}</p>{children}</> : null}
         </div>
-        <div className="step-details">
-          <p className="step-title">{p.titulo}</p>
-          <p>{p.descricao}</p>
-        </div>
-      </div>
+      </li>
     })}
-    <div className="steps-content">
-      <div className="step-content has-text-centered is-active">
-        {children}
-      </div>
-    </div>
-  </div>
+  </ul>
 } 

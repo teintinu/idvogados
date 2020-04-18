@@ -1,4 +1,22 @@
-export const brasil = {
+import { useState, useEffect } from 'react'
+
+export type SiglaEstado = 'RO' | 'AC' | 'AM' | 'RR' | 'PA' | 'AP' | 'TO' | 'MA' | 'PI' | 'CE' | 'RN' | 'PB' | 'PE' | 'AL' | 'SE' | 'BA' | 'MG' | 'ES' | 'RJ' | 'SP' | 'PR' | 'SC' | 'RS' | 'MS' | 'MT' | 'GO' | 'DF'
+
+export interface Cidade {
+  nome: string
+  uf: string
+  ibge: number
+  lat: number
+  lng: number
+}
+export interface Estado {
+  nome: string
+  ibge: number
+  capital: Cidade
+  cidades: Cidade[]
+}
+
+export const brasil: { [sigla in SiglaEstado]: Estado } = {
   "RO": {
     "nome": "Rondônia",
     "ibge": 11,
@@ -39150,4 +39168,22 @@ export const brasil = {
       "lng": -47.9297
     }
   }
+}
+
+export function useEstados() {
+  const [r] = useState(Object.keys(brasil).map((e: SiglaEstado) => ({
+    ...(brasil[e]),
+    sigla: e
+  })).sort((a, b) => a.nome.localeCompare(b.nome)))
+  return r
+}
+
+export function useCidades(estado: SiglaEstado) {
+  const [r, s] = useState<Cidade[]>([])
+  useEffect(() => {
+    const e = brasil[estado]
+    if (e) s([e.capital].concat(e.cidades.sort((a, b) => a.nome.localeCompare(b.nome))))
+    else s([])
+  }, [estado])
+  return r
 }

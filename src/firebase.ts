@@ -5,7 +5,8 @@ import 'firebase/firestore';
 import { firebaseConfig } from './firebaseConfig'
 
 const app = initializeApp(firebaseConfig)
-export const fbauth = app.auth();
+export const fbauth = app.auth()
+export const fbstore = app.firestore()
 
 export type Auth = 'pendente' | 'nao logado' | User
 export function useAuth() {
