@@ -40,9 +40,11 @@ Precisa-se:
 - [ ] Gerente de projeto
 - [ ] Consultoria Jurídica
 - [ ] Consultoria publicitária
+- [ ] DBO
 - [ ] Programador(a) TypeScript/React/Firebase
 - [ ] Programador(a) Android
 - [ ] Programador(a) iPhone
+- [ ] DevOps
 - [ ] Designer / Arte
 - [ ] UX / Usabilidade
 - [ ] Redator(a)
