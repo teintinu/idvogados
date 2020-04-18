@@ -1,0 +1,28 @@
+{
+  "name": "idvogados",
+  "version": "1.0.0",
+  "description": "Conexão entre trabalhadores e advogados trabalhistas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thr0w/idvogados.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thr0w/idvogados/issues"
+  },
+  "homepage": "https://github.com/thr0w/idvogados#readme",
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "typescript": "^3.8.3"
+  }
+}
