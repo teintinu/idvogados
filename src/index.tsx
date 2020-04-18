@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-
-const App = () => <div>Hello React App from scratch</div>;
+import { App } from './app/app';
+import "bulma-steps"
 
 ReactDOM.render(<App />, document.getElementById("app"));

@@ -18,6 +18,7 @@ Requisitos funcionais:
 - [ ] Termos de privacidade (LGPD)
 - [ ] Facilitar trabalhador encontrar advogado
 - [ ] Facilitar advogado encontrar trabalhador
+- [ ] Acompanhamento do processo
 
 Idéias:
 - [ ] Logo do escritória de advogacia?
@@ -29,7 +30,8 @@ Idéias:
 Precisa-se:
 - [ ] Consultoria Jurídica
 - [ ] Consultoria publicitária
-- [ ] Programador TypeScript/React/Firebase
-- [ ] Programador Android
-- [ ] Programador iPhone
+- [ ] Programador(a) TypeScript/React/Firebase
+- [ ] Programador(a) Android
+- [ ] Programador(a) iPhone
 - [ ] Designer
+- [ ] Redator(a)
