@@ -40,8 +40,9 @@ export function usePage(): [false | PageInfoWithId, number] {
     if (p === "pendente") return [false, 0]
     else if (p === "nao logado") id = 'login'
     else if (p === "novo") id = 'perfil'
-    else if (perfil.tipo === TipoTrabalhador) id = 'advogados'
-    else id = 'casos'
+    else if (perfil.tipo === TipoTrabalhador) id = 'advogados' // TODO/BUG criar rule 
+    else if (perfil.ok) id = 'casos'
+    else id = 'perfil'
   }
   const tipo: number = perfil.tipo || 0
   const n = { id, ...regPages[id] }

@@ -11,6 +11,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import { LoginPage } from './login'
 import { useUsuarioLogado } from '../state/auth'
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,7 +48,7 @@ export function PerfilPage() {
 
 export function Perfil({ uid }: PerfilProps) {
   const classes = useStyles()
-  const [, perfil, setPerfil] = usePerfilPorId(uid)
+  const [pstate, perfil, setPerfil] = usePerfilPorId(uid)
   const cid = '1'
   const [, caso, setCaso] = useCaso(uid, cid)
   const [dropdown, setDropdown] = React.useState('')
@@ -57,6 +58,15 @@ export function Perfil({ uid }: PerfilProps) {
   const ehAdvogado = !!((perfil.tipo || 0) & TipoAdvogado)
   return <form noValidate autoComplete="off">
     <Paper className={classes.root}>
+
+      <FormGroup>
+        <FormControlLabel
+          className={classes.entry}
+          control={<Switch checked={!!perfil.aut1} onChange={updAut1} />}
+          label="Compreendo que estou participando do teste do aplicativo idvogados e me comprometo a não prejudicá-lo"
+        />
+      </FormGroup>
+
       <TextField
         id="nome"
         label="Nome completo"
@@ -64,7 +74,7 @@ export function Perfil({ uid }: PerfilProps) {
         autoComplete="off"
         className={classes.entry}
         InputLabelProps={{ shrink: true }}
-        value={perfil.nome} onChange={updNome}
+        value={perfil.nome || ''} onChange={updNome}
       />
       <TextField
         id="cpf"
@@ -73,20 +83,29 @@ export function Perfil({ uid }: PerfilProps) {
         color="secondary"
         className={classes.entry}
         InputLabelProps={{ shrink: true }}
-        value={perfil.cpf} onChange={updCPF}
+        value={perfil.cpf || ''} onChange={updCPF}
+      />
+      <TextField
+        id="telefones"
+        label="Telefones"
+        autoComplete="off"
+        color="secondary"
+        className={classes.entry}
+        InputLabelProps={{ shrink: true }}
+        value={perfil.telefones || ''} onChange={updTelefones}
       />
 
       <FormControl className={classes.entry}>
         <InputLabel id="estado-label" shrink={true}>Estado</InputLabel>
         <NativeSelect
           id="estado"
-          value={perfil.uf}
+          value={perfil.uf || ''}
           onChange={updUF}
           rows={9}
         >
           {
             estados.map((e) => {
-              return <option value={e.sigla}>{e.sigla + '-' + e.nome}</option >
+              return <option key={e.sigla} value={e.sigla}>{e.sigla + '-' + e.nome}</option >
             })
           }
         </NativeSelect >
@@ -96,13 +115,13 @@ export function Perfil({ uid }: PerfilProps) {
         <InputLabel id="cidade-label" shrink={true}>Cidade</InputLabel>
         <NativeSelect
           id="cidade"
-          value={perfil.cidade}
+          value={perfil.cidade || ''}
           onChange={updCidade}
           rows={9}
         >
           {
             cidades.map((c) => {
-              return <option value={c.nome}>{c.nome}</option >
+              return <option key={c.nome} value={c.nome}>{c.nome}</option >
             })
           }
         </NativeSelect >
@@ -112,42 +131,68 @@ export function Perfil({ uid }: PerfilProps) {
         <FormControlLabel
           className={classes.entry}
           control={<Switch checked={ehTrabalhador} onChange={updTrabalhador} aria-label="Sou trabalhador" />}
-          label="Sou trabalhador e preciso de um advogado"
+          label="Sou trabalhador(a) e preciso de um(a) advogado(a)"
         />
       </FormGroup>
 
-      {ehTrabalhador ? <TextField
-        id="cpf"
-        label="Descreva aqui o seu caso com o máximo de detalhes possível"
-        color="secondary"
-        autoComplete="off"
-        multiline={true}
-        rows={4}
-        InputLabelProps={{ shrink: true }}
-        className={classes.entry}
-        value={caso.descricao || ''} onChange={updCaso}
-      /> : null}
+      {ehTrabalhador ? <>
+        <Paper className={classes.entry}>
+          <ul>
+            <li>O relato que você colocar abaixo será mostrado a diversos(as) advogados(as) que se disponibilizam a ajudar para que as condições mínimas de trabalho garantidas em lei sejam cumpridas.</li>
+            <li>O idvogados apenas facilida o contato entre o(a) trabalhador(a) e o(a) advogado(a). Nenhum valor é cobrado e nenhuma garantia é estabelecida</li>
+          </ul>
+        </Paper>
+        <FormGroup key="aut2">
+          <FormControlLabel
+            className={classes.entry}
+            control={<Switch checked={!!perfil.aut2} onChange={updAut2} />}
+            label="Concordo que meus dados poderão ser visualizados a outras pessoas cadastradas no idvogados"
+          />
+        </FormGroup>
+
+        <TextField
+          id="cpf"
+          key="cpf"
+          label="Descreva aqui o seu caso com o máximo de detalhes possível"
+          color="secondary"
+          autoComplete="off"
+          multiline={true}
+          rows={4}
+          InputLabelProps={{ shrink: true }}
+          className={classes.entry}
+          value={caso.descricao || ''} onChange={updCaso}
+        /> </> : null}
 
       <FormGroup>
         <FormControlLabel
           className={classes.entry}
           control={<Switch checked={ehAdvogado} onChange={updAdvogado} aria-label="Sou advogado" />}
-          label="Sou advogado e quero disponibilizar meu trabalho"
+          label="Sou advogado(a) e quero disponibilizar meu trabalho"
         />
       </FormGroup>
 
-      {ehAdvogado ? <TextField
-        id="oab"
-        label="registro da OAB"
-        color="secondary"
-        autoComplete="off"
-        InputLabelProps={{ shrink: true }}
-        className={classes.entry}
-        value={perfil.oab} onChange={updOAB}
-      /> : null}
+      {ehAdvogado ? <>
+        <TextField
+          id="oab"
+          key="oab"
+          label="registro da OAB"
+          color="secondary"
+          autoComplete="off"
+          InputLabelProps={{ shrink: true }}
+          className={classes.entry}
+          value={perfil.oab || ''} onChange={updOAB}
+        />
+
+        {perfil.ok || pstate === 'novo' ? null :
+          <MuiAlert key="ok" severity="info" elevation={6} variant="filled" >
+            AGUARDE ATÉ QUE SEU CADASTRO SEJA APROVADO
+          </MuiAlert>
+        }
+
+      </> : null}
 
       <div className={classes.botoes}>
-        <Button variant="contained" onClick={gravar}>Gravar</Button>
+        <Button variant="contained" disabled={!perfil.aut1} onClick={gravar}>Gravar</Button>
       </div>
     </Paper >
   </form>
@@ -158,6 +203,9 @@ export function Perfil({ uid }: PerfilProps) {
   function updCPF(e: any) {
     setPerfil({ ...perfil, cpf: e.target.value })
   }
+  function updTelefones(e: any) {
+    setPerfil({ ...perfil, telefones: e.target.value })
+  }
   function updOAB(e: any) {
     setPerfil({ ...perfil, oab: e.target.value })
   }
@@ -166,6 +214,12 @@ export function Perfil({ uid }: PerfilProps) {
   }
   function updCidade(c: any) {
     setPerfil({ ...perfil, cidade: c.target.value })
+  }
+  function updAut1(c: any) {
+    setPerfil({ ...perfil, aut1: !!c.target.checked })
+  }
+  function updAut2(c: any) {
+    setPerfil({ ...perfil, aut2: !!c.target.checked })
   }
   function updTrabalhador(e: any) {
     const v = { ...perfil }

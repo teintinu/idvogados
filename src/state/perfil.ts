@@ -9,11 +9,15 @@ export const TipoAdvogado = 2
 export interface Perfil {
   nome: string
   cpf: string
+  telefones: string
   cidade: string
   uf: SiglaEstado
   tipo: number
   oab: '-' | string
-  pub?: boolean
+  aut1?: boolean
+  aut2?: boolean
+  aut3?: boolean
+  ok?: boolean
 }
 
 export interface Proposta {
