@@ -5,28 +5,166 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IDvogados</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
-  <link rel="stylesheet" href="https://cdn.rawgit.com/octoshrimpy/bulma-o-steps/master/bulma-steps.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <style>
+    .initLoading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 24px;
+      height: 24px;
+      margin: -12px 0 0 -12px;
+    }
+
+    .initLoading i {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      display: block;
+      width: 24px;
+      height: 24px;
+      background: rgb(221, 110, 18);
+      border-radius: 24px;
+      animation: spin2 1.5s ease-in-out infinite;
+    }
+
+    .initLoading i:first-child {
+      top: -24px;
+      left: 0;
+      background: #cae746;
+      animation: spin 1.5s ease-in-out infinite;
+    }
+
+    .initLoading i:last-child {
+      top: 24px;
+      left: -24px;
+      background: #C7202C;
+      animation: spin3 1.5s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        top: -24px;
+        left: 0;
+        -webkit-transform: scale(1);
+      }
+
+      17% {
+        -webkit-transform: scale(.5);
+      }
+
+      33% {
+        top: 24px;
+        left: 24px;
+        -webkit-transform: scale(1);
+      }
+
+      50% {
+        -webkit-transform: scale(.5);
+      }
+
+      66% {
+        top: 24px;
+        left: -24px;
+        -webkit-transform: scale(1);
+      }
+
+      83% {
+        -webkit-transform: scale(.5);
+      }
+
+      100% {
+        top: -24px;
+        left: 0;
+        -webkit-transform: scale(1);
+      }
+    }
+
+    @keyframes spin2 {
+      0% {
+        top: 24px;
+        left: 24px;
+        -webkit-transform: scale(1);
+      }
+
+      17% {
+        -webkit-transform: scale(.5);
+      }
+
+      33% {
+        top: 24px;
+        left: -24px;
+        -webkit-transform: scale(1);
+      }
+
+      50% {
+        -webkit-transform: scale(.5);
+      }
+
+      66% {
+        top: -24px;
+        left: 0;
+        -webkit-transform: scale(1);
+      }
+
+      83% {
+        -webkit-transform: scale(.5);
+      }
+
+      100% {
+        top: 24px;
+        left: 24px;
+        -webkit-transform: scale(1);
+      }
+    }
+
+    @keyframes spin3 {
+      0% {
+        top: 24px;
+        left: -24px;
+        -webkit-transform: scale(1);
+      }
+
+      17% {
+        -webkit-transform: scale(.5);
+      }
+
+      33% {
+        top: -24px;
+        left: 0;
+        -webkit-transform: scale(1);
+      }
+
+      50% {
+        -webkit-transform: scale(.5);
+      }
+
+      66% {
+        top: 24px;
+        left: 24px;
+        -webkit-transform: scale(1);
+      }
+
+      83% {
+        -webkit-transform: scale(.5);
+      }
+
+      100% {
+        top: 24px;
+        left: -24px;
+        -webkit-transform: scale(1);
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <section class="section">
-    <div class="container">
-      <h1 class="title columns">
-        <img src="./logo.png" class="column" />
-        <span class="column is-size-4">
-          Conexão entre trabalhadores e advogados trabalhistas <br />
-          <br />
-          <span class="is-size-6 has-text-danger">
-            ESTE É UM PROTÓTIPO DE APLICATIVO E SÓ DEVE SER USADO PARA TESTES
-          </span>
-        </span>
-      </h1>
-      <div id="app" class="subtitle">        
-      </div>
-    </div>
-  </section>
+  <div class="initLoading">
+    <i></i>
+    <i></i>
+    <i></i>
+  </div>
+  <div id="app">
 </body>
 
 </html>

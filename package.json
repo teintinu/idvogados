@@ -4,7 +4,9 @@
   "description": "Conexão entre trabalhadores e advogados trabalhistas",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html --no-source-maps",
+    "deploy": "npm run build ; firebase deploy"
   },
   "repository": {
     "type": "git",
@@ -17,14 +19,34 @@
   },
   "homepage": "https://github.com/thr0w/idvogados#readme",
   "dependencies": {
+    "@material-ui/core": "^4.9.11",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.50",
     "bulma-steps": "^2.2.1",
     "firebase": "^7.14.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-firebase-hooks": "^2.1.1"
   },
   "devDependencies": {
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
+    "cssnano": "^4.1.10",
     "typescript": "^3.8.3"
+  },
+  "pwaManifest": {
+    "name": "IDvogados",
+    "shortName": "IDvogados",
+    "startURL": "./src/index.html",
+    "theme": "#add8e6",
+    "generateIconOptions": {
+      "baseIcon": "./src/logo/png",
+      "sizes": [
+        192,
+        384,
+        512
+      ],
+      "genFavicons": true
+    }
   }
 }

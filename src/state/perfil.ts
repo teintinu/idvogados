@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { fbauth, fbstore } from '../firebase'
+import { fbstore } from '../firebase'
 import { SiglaEstado } from './brasil'
+import { useUsuarioLogado } from './auth'
 
 export const TipoTrabalhador = 1
 export const TipoAdvogado = 2
@@ -12,13 +13,7 @@ export interface Perfil {
   uf: SiglaEstado
   tipo: number
   oab: '-' | string
-}
-
-export interface Caso {
-  trabalhador: string
-  descricao: string
-  data: number
-  advogado?: string
+  pub?: boolean
 }
 
 export interface Proposta {
@@ -28,50 +23,39 @@ export interface Proposta {
   proposta: string
 }
 
-export function usePerfil(uid: string): ["pendente" | "edita" | "novo" | "erro", Perfil, (n: Perfil) => void] {
-  const [r, s] = useState<["pendente" | "edita" | "novo" | "erro", Perfil]>(["pendente", {} as any])
+export function usePerfilDoUsarioLogado(): ["pendente" | "nao logado" | "edita" | "novo" | "erro", Perfil, (n: Perfil) => void] {
+  const u = useUsuarioLogado()
+  const [hRet, hSet] = useState<["pendente" | "nao logado" | "edita" | "novo" | "erro", Perfil]>(["pendente", {} as any])
   useEffect((() => {
-    if (uid === 'pendente') s(["pendente", {} as any])
-    if (uid === 'nao logado') s(["erro", {} as any])
+    if (u === 'pendente') hSet(["pendente", {} as any])
+    else if (u === 'nao logado') hSet(["nao logado", {} as any])
     else {
-      console.log('le dados')
-      fbstore.collection("perfil").doc(uid).get().then((d) => {
-        if (d.exists) s(["edita", d.data() as any])
-        else s(["novo", {} as any])
-      }, (e) => s(["erro", r[1]]))
+      fbstore.collection("perfil").doc(u.uid).get().then((d) => {
+        if (d.exists) hSet(["edita", d.data() as any])
+        else hSet(["novo", {} as any])
+      }, (e) => hSet(["erro", hRet[1]]))
     }
-  }) as any, [uid])
-  return [r[0], r[1], seta]
+  }) as any, [u])
+  return [hRet[0], hRet[1], seta]
   function seta(n: Perfil) {
-    s([r[0] === "pendente" ? "novo" : r[0], n])
+    hSet([hRet[0] === "pendente" ? "novo" : hRet[0], n])
   }
 }
 
-export function useCaso(uid: string, cid: string): ["pendente" | "edita" | "novo" | "erro", Caso, (n: Caso) => void] {
-  const [r, s] = useState<["pendente" | "edita" | "novo" | "erro", Caso]>(["pendente", {} as any])
+export function usePerfilPorId(uid: string): ["pendente" | "edita" | "novo" | "erro", Perfil, (n: Perfil) => void] {
+  const [hRet, hSet] = useState<["pendente" | "edita" | "novo" | "erro", Perfil]>(["pendente", {} as any])
   useEffect((() => {
-    if (uid === 'pendente') s(["pendente", {} as any])
-    if (uid === 'nao logado') s(["erro", {} as any])
-    else {
-      fbstore.collection("caso").doc(uid + "-" + cid).get().then((d) => {
-        if (d.exists) s(["edita", d.data() as any])
-        else s(["novo", {} as any])
-      }, (e) => s(["erro", r[1]]))
-    }
+    fbstore.collection("perfil").doc(uid).get().then((d) => {
+      if (d.exists) hSet(["edita", d.data() as any])
+      else hSet(["novo", {} as any])
+    }, (e) => hSet(["erro", hRet[1]]))
   }) as any, [uid])
-  return [r[0], r[1], seta]
-  function seta(n: Caso) {
-    s([r[0] === "pendente" ? "novo" : r[0], n])
+  return [hRet[0], hRet[1], seta]
+  function seta(n: Perfil) {
+    hSet([hRet[0] === "pendente" ? "novo" : hRet[0], n])
   }
 }
 
 export function gravaPerfil(uid: string, perfil: Perfil) {
   return fbstore.collection("perfil").doc(uid).set(perfil)
-}
-
-export function gravaCaso(uid: string, cid: string, caso: Caso) {
-  debugger
-  caso.trabalhador = uid
-  if (!caso.data) caso.data = Date.now()
-  return fbstore.collection("caso").doc(uid + "-" + cid).set(caso)
 }

@@ -1,188 +1,157 @@
 import * as React from 'react'
-import { Passos } from './passos'
-import { fbauth } from '../firebase'
-import { auth } from 'firebase/app'
-import { usePerfil, TipoTrabalhador, TipoAdvogado, gravaPerfil, gravaCaso, useCaso } from '../state/perfil'
+import { TipoTrabalhador, TipoAdvogado, gravaPerfil, usePerfilPorId } from '../state/perfil'
 import { useEstados, useCidades } from '../state/brasil'
-import { Btn } from './btn'
+import { useCaso, gravaCaso } from '../state/caso'
+
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
+import { Paper, TextField, Button, FormControl, InputLabel, Select, MenuItem, NativeSelect } from '@material-ui/core'
+
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import { LoginPage } from './login'
+import { useUsuarioLogado } from '../state/auth'
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      margin: 20,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexFlow: 'column'
+    },
+    entry: {
+      width: '40rem',
+      margin: 20,
+    },
+    botoes: {
+      padding: 20,
+      width: '40%',
+      display: 'flex',
+      justifyContent: 'space-around'
+    },
+  }),
+);
 
 export interface PerfilProps {
-  usuario: firebase.User
+  uid: string
 }
 
-export function Perfil({ usuario }: PerfilProps) {
-  const [pstate, perfil, setPerfil] = usePerfil(usuario.uid)
+export function PerfilPage() {
+  const u = useUsuarioLogado()
+  if (u === "pendente") return <></>
+  if (u === "nao logado") return <LoginPage />
+  return <Perfil uid={u.uid} />
+}
+
+export function Perfil({ uid }: PerfilProps) {
+  const classes = useStyles()
+  const [, perfil, setPerfil] = usePerfilPorId(uid)
   const cid = '1'
-  const [, caso, setCaso] = useCaso(usuario.uid, cid)
+  const [, caso, setCaso] = useCaso(uid, cid)
   const [dropdown, setDropdown] = React.useState('')
   const estados = useEstados()
   const cidades = useCidades(perfil.uf)
-  const [gravando, setGravando] = React.useState(false)
   const ehTrabalhador = !!((perfil.tipo || 0) & TipoTrabalhador)
   const ehAdvogado = !!((perfil.tipo || 0) & TipoAdvogado)
-  return <Passos atual={1}>
-    {pstate === "pendente" ? <button className="button is-loading"></button> :
-      gravando ? <>
-        <button className="button is-loading">
-        </button>
-        <p className="is-size-4">Registramos o seu perfil, iremos verificar seus dados, você receberá um email quando seu cadastro for aprovado</p>
-        <p className="is-size-7">PS: Este app é apenas um protótipo, as outras funcionalidades ainda não foram implementadas</p>
-      </> :
-        <>
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label">Informe seu nome completo</label>
-            </div>
-            <div className="field-body">
-              <div className="field">
-                <div className="control">
-                  <input className="input" name="nome" id="nome" type="text" placeholder="Nome completo" autoFocus data-validate="require"
-                    value={perfil.nome} onChange={updNome}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+  return <form noValidate autoComplete="off">
+    <Paper className={classes.root}>
+      <TextField
+        id="nome"
+        label="Nome completo"
+        color="secondary"
+        autoComplete="off"
+        className={classes.entry}
+        InputLabelProps={{ shrink: true }}
+        value={perfil.nome} onChange={updNome}
+      />
+      <TextField
+        id="cpf"
+        label="CPF"
+        autoComplete="off"
+        color="secondary"
+        className={classes.entry}
+        InputLabelProps={{ shrink: true }}
+        value={perfil.cpf} onChange={updCPF}
+      />
 
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label">Informe seu CPF</label>
-            </div>
-            <div className="field-body">
-              <div className="field">
-                <div className="control">
-                  <input className="input" name="cpf" id="cpf" type="text" placeholder="CPF" autoFocus data-validate="require"
-                    value={perfil.cpf} onChange={updCPF}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+      <FormControl className={classes.entry}>
+        <InputLabel id="estado-label" shrink={true}>Estado</InputLabel>
+        <NativeSelect
+          id="estado"
+          value={perfil.uf}
+          onChange={updUF}
+          rows={9}
+        >
+          {
+            estados.map((e) => {
+              return <option value={e.sigla}>{e.sigla + '-' + e.nome}</option >
+            })
+          }
+        </NativeSelect >
+      </FormControl>
 
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label">Estado onde você mora:</label>
-            </div>
-            <div className="field-body">
-              <div className={dropdown === 'uf' ? "dropdown is-active" : "dropdown"}>
-                <div className="dropdown-trigger">
-                  <button className="button" aria-haspopup="true" aria-controls="dropdown-menu" onClick={togleEstado} onBlur={inativa}>
-                    <span>{perfil.uf || '-'}</span>
-                    <span className="icon is-small">
-                      <i className="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                  </button>
-                </div>
-                <div className="dropdown-menu" id="dropdown-menu" role="menu">
-                  <div className="dropdown-content" style={{ maxHeight: '10rem', overflowY: 'scroll' }}>
-                    {estados.map((e) => {
-                      return <a key={e.sigla} onClick={selEstado} className={e.sigla === perfil.uf ? "dropdown-item is-active" : "dropdown-item"}>
-                        {e.sigla}-{e.nome}
-                      </a>
-                      function selEstado() {
-                        setDropdown('')
-                        setPerfil({ ...perfil, uf: e.sigla })
-                      }
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <FormControl className={classes.entry} >
+        <InputLabel id="cidade-label" shrink={true}>Cidade</InputLabel>
+        <NativeSelect
+          id="cidade"
+          value={perfil.cidade}
+          onChange={updCidade}
+          rows={9}
+        >
+          {
+            cidades.map((c) => {
+              return <option value={c.nome}>{c.nome}</option >
+            })
+          }
+        </NativeSelect >
+      </FormControl>
 
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label">Cidade onde você mora:</label>
-            </div>
-            <div className="field-body">
-              <div className={dropdown === 'cidade' ? "dropdown is-active" : "dropdown"}>
-                <div className="dropdown-trigger">
-                  <button className="button" aria-haspopup="true" aria-controls="dropdown-menu" onClick={togleCidade} onBlur={inativa}>
-                    <span>{perfil.uf && perfil.cidade || '-'}</span>
-                    <span className="icon is-small">
-                      <i className="fas fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                  </button>
-                </div>
-                <div className="dropdown-menu" id="dropdown-menu" role="menu">
-                  <div className="dropdown-content" style={{ maxHeight: '10rem', overflowY: 'scroll' }}>
-                    {cidades.map((c) => {
-                      return <a key={c.ibge} onClick={selEstado} className={c.nome === perfil.cidade ? "dropdown-item is-active" : "dropdown-item"}>
-                        {c.nome}
-                      </a>
-                      function selEstado() {
-                        setDropdown('')
-                        setPerfil({ ...perfil, cidade: c.nome })
-                      }
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <FormGroup>
+        <FormControlLabel
+          className={classes.entry}
+          control={<Switch checked={ehTrabalhador} onChange={updTrabalhador} aria-label="Sou trabalhador" />}
+          label="Sou trabalhador e preciso de um advogado"
+        />
+      </FormGroup>
 
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label">&nbsp;</label>
-            </div>
-            <div className="field-body">
-              <label className="checkbox" >
-                <input type="checkbox" checked={ehTrabalhador} onChange={updTrabalhador} />
-            Sou trabalhador e preciso de um advogado
-         </label>
-            </div>
-          </div>
+      {ehTrabalhador ? <TextField
+        id="cpf"
+        label="Descreva aqui o seu caso com o máximo de detalhes possível"
+        color="secondary"
+        autoComplete="off"
+        multiline={true}
+        rows={4}
+        InputLabelProps={{ shrink: true }}
+        className={classes.entry}
+        value={caso.descricao || ''} onChange={updCaso}
+      /> : null}
 
-          {ehTrabalhador ?
-            <div className="field is-horizontal">
-              <div className="field-label is-normal">
-                <label className="label is-unselectabl">Relato</label>
-              </div>
-              <div className="field-body">
-                <textarea className="textarea" placeholder="Descreva aqui o seu caso com o máximo de detalhes possível" value={caso.descricao || ''} onChange={updCaso}></textarea>
-              </div>
-            </div>
-            : null}
+      <FormGroup>
+        <FormControlLabel
+          className={classes.entry}
+          control={<Switch checked={ehAdvogado} onChange={updAdvogado} aria-label="Sou advogado" />}
+          label="Sou advogado e quero disponibilizar meu trabalho"
+        />
+      </FormGroup>
 
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label">&nbsp;</label>
-            </div>
-            <div className="field-body">
-              <label className="checkbox is-unselectabl" >
-                <input type="checkbox" checked={ehAdvogado} onChange={updAdvogado} />
-             Sou advogado e quero disponibilizar meu trabalho
-          </label>
-            </div>
-          </div>
+      {ehAdvogado ? <TextField
+        id="oab"
+        label="registro da OAB"
+        color="secondary"
+        autoComplete="off"
+        InputLabelProps={{ shrink: true }}
+        className={classes.entry}
+        value={perfil.oab} onChange={updOAB}
+      /> : null}
 
-          {ehAdvogado ?
-            <div className="field is-horizontal">
-              <div className="field-label is-normal">
-                <label className="label">registro da OAB</label>
-              </div>
-              <div className="field-body">
-                <div className="field">
-                  <div className="control">
-                    <input className="input" name="oab" id="oab" type="text" placeholder="OAB/UF" autoFocus data-validate="require"
-                      value={perfil.oab} onChange={updOAB}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            : null}
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label">&nbsp;</label>
-            </div>
-            <div className="field-body">
-              <Btn title="Gravar" className="is-primary" run={gravar} />
-            </div>
-          </div>
-        </>
-    }
-  </Passos >
+      <div className={classes.botoes}>
+        <Button variant="contained" onClick={gravar}>Gravar</Button>
+      </div>
+    </Paper >
+  </form>
+
   function updNome(e: any) {
     setPerfil({ ...perfil, nome: e.target.value })
   }
@@ -191,6 +160,12 @@ export function Perfil({ usuario }: PerfilProps) {
   }
   function updOAB(e: any) {
     setPerfil({ ...perfil, oab: e.target.value })
+  }
+  function updUF(e: any) {
+    setPerfil({ ...perfil, uf: e.target.value })
+  }
+  function updCidade(c: any) {
+    setPerfil({ ...perfil, cidade: c.target.value })
   }
   function updTrabalhador(e: any) {
     const v = { ...perfil }
@@ -207,18 +182,8 @@ export function Perfil({ usuario }: PerfilProps) {
   function updCaso(e: any) {
     setCaso({ ...caso, descricao: e.target.value })
   }
-  function togleEstado() {
-    setDropdown(dropdown === 'uf' ? '' : 'uf')
-  }
-  function togleCidade() {
-    setDropdown(dropdown === 'cidade' ? '' : 'cidade')
-  }
-  function inativa() {
-    setTimeout(() => setDropdown(''), 100)
-  }
   async function gravar() {
-    await gravaPerfil(usuario.uid, perfil)
-    if (ehTrabalhador) await gravaCaso(usuario.uid, cid, caso)
-    setGravando(true)
+    await gravaPerfil(uid, perfil)
+    if (ehTrabalhador) await gravaCaso(uid, cid, caso)
   }
 }

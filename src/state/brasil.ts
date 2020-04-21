@@ -39187,3 +39187,8 @@ export function useCidades(estado: SiglaEstado) {
   }, [estado])
   return r
 }
+
+export function buscaCidade( uf: string, cidade: string): Cidade {
+  const e = brasil[uf]
+  return [e.capital].concat(e.cidades).filter((c) => c.nome === cidade)[0]
+}
