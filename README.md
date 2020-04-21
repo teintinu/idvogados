@@ -5,6 +5,9 @@ Este é um projeto Open Source, sob a licença GPL3, inspirado na proposta do Gr
 
 Para participar desse projeto você pode acessar a área [Issues](https://github.com/thr0w/idvogados/issues), você pode abrir questões em "New Issue" ou opinar sobre questões existentes entrando nelas.
 
+
+> Sei que há outros projetos em paralelo, isso é bom. Este projeto é uma proposta que pode ser continuada ou encerrada conforme o que a comunidade dedicir. Materei esse projeto por um tempo para oferecer a auxiliar com que a propsota do idvogados se estabeleça como realidade. Caso você queira contribuir com o projeto, abaixo há várias descrições de ajuda que temos necessidade.
+
 ### O App permitirá que advogados encontrem casos facilmente e façam proposta aos trabalhadores.
 ### Dúvida: O app deve listar advogados(as) para que o trabalhador possa procurá-lo(a)?
 
@@ -22,7 +25,8 @@ Requisitos funcionais:
 - [X] Cadastro advogado
 - [ ] Termos de uso trabalhador
 - [ ] Termos de privacidade (LGPD)
-- [ ] Facilitar advogado encontrar trabalhador
+- [X] Facilitar a(o) trabalhadora relatar o caso do qual precisa de apoio jurídico
+- [X] Facilitar a(o) advogado(a) encontrar casos de trabalhadores e iniciar o contato
 - [ ] Acompanhamento das propostas
 - [ ] Acompanhamento do processo
 - [ ] Anexar documentos ao processo
@@ -53,7 +57,7 @@ Precisa-se:
 Tecnologias adotadas neste protótipo:
 - [x] Back-end: Firebase/firestore
 - [x] Frontend WEB/PWA: ReactJS/Typescript
-- [ ] Android: A ser definido (preferencialmente nativo para diminuir tamanho e exigências do app)
-- [ ] iPhone: A ser definido (preferencialmente nativo para diminuir tamanho e exigências do app)
+- [ ] Android: PWA ou nativo?
+- [ ] iPhone: PWA ou nativo?
 
 > Aplicativo para entregas: A proposta desse app é apenas de facilitadr o contato entre o(a) advogado e a(a) trabalhador(a). Um projeto para que os entregadores tenham um aplicativo próprio de entregas deve ser feito em paralelo e organizado por um consorcio de associação de trabalhadores.
