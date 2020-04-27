@@ -39,6 +39,7 @@ Idéias:
 - [ ] Pesquisar no Mapa?
 - [ ] Pesquisar por distância em KM?
 - [ ] Chat/Video conferência entre trabalhador e advogado?
+- [ ] Pesquisa por semântica jurídica? Necessário indexar relatos por categorizações jurídicas.
 
 Precisa-se:
 - [ ] Patrocínio para custos de hospedagem
