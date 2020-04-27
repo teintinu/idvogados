@@ -6,7 +6,7 @@ Este é um projeto Open Source, sob a licença GPL3, inspirado na proposta do Gr
 Para participar desse projeto você pode acessar a área [Issues](https://github.com/thr0w/idvogados/issues), você pode abrir questões em "New Issue" ou opinar sobre questões existentes entrando nelas.
 
 
-> Sei que há outros projetos em paralelo, isso é bom. Este projeto é uma proposta que pode ser continuada ou encerrada conforme o que a comunidade dedicir. Materei esse projeto por um tempo para a auxiliar com que a propsota do idvogados se estabeleça como realidade. Caso você queira contribuir com o projeto, abaixo há várias descrições de ajuda que temos necessidade. Você pode usar esse projeot ou trechos dele em outros projetos livremente, conforme licença GPL
+> Sei que há outros projetos em paralelo, isso é bom. Este projeto é uma proposta que pode ser continuada ou encerrada conforme o que a comunidade dedicir. Manterei esse projeto por um tempo para a auxiliar com que a proposta do idvogados se estabeleça como realidade. Caso você queira contribuir com o projeto, abaixo há várias descrições de ajuda que temos necessidade. Você pode usar esse projeto ou trechos dele em outros projetos livremente, conforme licença GPL
 
 ### O App permitirá que advogados encontrem casos facilmente e façam proposta aos trabalhadores.
 ### Dúvida: O app deve listar advogados(as) para que o trabalhador possa procurá-lo(a)?
@@ -61,4 +61,4 @@ Tecnologias adotadas neste protótipo:
 - [ ] Android: PWA ou nativo?
 - [ ] iPhone: PWA ou nativo?
 
-> Aplicativo para entregas: A proposta desse app é apenas de facilitadr o contato entre o(a) advogado e a(a) trabalhador(a). Um projeto para que os entregadores tenham um aplicativo próprio de entregas deve ser feito em paralelo e organizado por um consorcio de associação de trabalhadores.
+> Aplicativo para entregas: A proposta desse app é apenas de facilitador o contato entre o(a) advogado e a(a) trabalhador(a). Um projeto para que os entregadores tenham um aplicativo próprio de entregas deve ser feito em paralelo e organizado por um consorcio de associação de trabalhadores.
