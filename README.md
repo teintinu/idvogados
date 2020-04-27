@@ -25,7 +25,7 @@ Requisitos funcionais:
 - [X] Cadastro advogado
 - [ ] Termos de uso trabalhador
 - [ ] Termos de privacidade (LGPD)
-- [X] Facilitar a(o) trabalhadora relatar o caso do qual precisa de apoio jurídico
+- [X] Facilitar a(o) trabalhador(a) relatar o caso do qual precisa de apoio jurídico
 - [X] Facilitar a(o) advogado(a) encontrar casos de trabalhadores e iniciar o contato
 - [ ] Acompanhamento das propostas
 - [ ] Acompanhamento do processo
